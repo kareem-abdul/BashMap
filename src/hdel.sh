@@ -1,7 +1,6 @@
 #!/bin/bash
 
 hdel() {
-	[ $# -eq 0 ] && die "usage hdel hashname [key]" 1
 	local hash="/tmp/hashmap.$1"
 	local key=$2
 	if [ -f $hash ]
@@ -13,6 +12,11 @@ hdel() {
 		else
 			rm $hash
 		fi
+	else
+		local files=$(ls "/tmp" | grep -o "hashmap\..*")
+		for file in $files; do
+			[ $file=~"hashmap\..*" ] && rm "/tmp/$file"
+		done
 	fi
 }
 
